@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Saffron India Dashboard - Your personalized saffron shopping experience."
+    />
+    <meta name="keywords" content="saffron, kashmiri saffron, premium spices, saffron tea" />
+    <title>Dashboard | Saffron India</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <a
+      class="whatsapp-btn"
+      href="https://wa.me/919579958302?text=Hello%20Saffron%20India%2C%20I%20would%20love%20to%20know%20more%20about%20your%20products."
+      aria-label="Chat on WhatsApp"
+      target="_blank"
+      rel="noopener"
+    >
+      <span>Chat with us</span>
+      &#x1F4AC;
+    </a>
+
+    <header>
+      <div class="container nav">
+        <a class="logo" href="dashboard.html">Saffron India</a>
+        <nav class="nav-links">
+          <a href="dashboard.html#products">Products</a>
+          <a href="dashboard.html#reviews">Reviews</a>
+          <a href="contact.html">Contact</a>
+          <div class="nav-more">
+            <button class="secondary-btn nav-more-toggle" type="button">More ▾</button>
+            <div class="nav-more-menu">
+              <a href="about.html">About Us</a>
+              <a href="products.html">Shop All</a>
+              <a href="blog.html">Journal</a>
+              <a href="training.html">Training & Support</a>
+              <a href="career.html">Careers</a>
+              <a href="checkout.html">Checkout</a>
+            </div>
+          </div>
+        </nav>
+        <div class="nav-actions" id="auth-nav">
+          <a class="secondary-btn" href="login.html">Login</a>
+          <a class="primary-btn" href="register.html">Register</a>
+        </div>
+        <div class="nav-utility">
+          <a class="secondary-btn" href="profile.html">Profile</a>
+          <a class="primary-btn" href="cart.html">Cart</a>
+          <a class="secondary-btn hidden" id="admin-link" href="SaffronIndiaAdmin/index.html">Admin Panel</a>
+          <button class="primary-btn" id="logout-btn" type="button">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container section">
+        <div class="hero-content">
+          <p class="tag">Welcome Back</p>
+          <h1>Welcome, <span id="user-name">Guest</span></h1>
+          <p>
+            Discover the aroma, color, and healing benefits of saffron cultivated at 5,000 ft in the Pampore valley.
+            Elevate desserts, tonics, and wellness routines with a golden thread of purity.
+          </p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+            <a class="primary-btn" href="#products">Shop Collection</a>
+            <a class="secondary-btn" href="profile.html">View Profile</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1457410129867-5999af49daf7?auto=format&fit=crop&w=900&q=80" alt="Premium saffron being harvested" />
+          <div class="hero-badge">
+            <h4>ISO 3632 Grade I</h4>
+            <p>Deep red stigma with floral honeyed aroma.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="section container">
+        <div class="section-header">
+          <p class="section-label">Collections</p>
+          <h2 class="section-title">Experience Saffron in Every Ritual</h2>
+        </div>
+        <div class="card-grid" id="products-grid">
+          <article class="product-card">
+            <span class="badge">Bestseller</span>
+            <img src="https://images.unsplash.com/photo-1453831210728-695502f9f795?auto=format&fit=crop&w=600&q=80" alt="Glass jar with saffron threads" />
+            <h3 class="product-title">Imperial Saffron Threads (2g)</h3>
+            <p>Single-origin stigma curated from early dawn harvest for intense crocin levels.</p>
+            <div class="product-meta">
+              <span class="price">&#8377;1,999</span>
+              <div class="product-actions">
+                <button class="primary-btn add-to-cart-btn" data-product="Imperial Saffron Threads" data-price="1999">Add to Cart</button>
+                <button class="learn-more-link" onclick="showProductDetails('Imperial Saffron Threads', 'Premium Grade I saffron hand-picked from our Pampore estate at 5,000 ft altitude. Each stigma is carefully selected within 6 hours of sunrise to preserve the delicate terpenes and maximize crocin levels above 250. Dried over cedar ember for 12 hours to develop the signature honeyed aroma. Perfect for culinary applications, wellness rituals, and gourmet cooking. Traceable from farm to table with ISO 3632 certification. Storage: Keep in airtight container away from light and heat for up to 2 years.', '1999')">Learn More</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <img src="https://images.unsplash.com/photo-1470338943154-1f4e68d2659b?auto=format&fit=crop&w=600&q=80" alt="Beverage infused with saffron" />
+            <h3 class="product-title">Noor Wellness Elixir</h3>
+            <p>Saffron concentrate with rose, cardamom, and raw honey for calming nightly rituals.</p>
+            <div class="product-meta">
+              <span class="price">&#8377;1,299</span>
+              <div class="product-actions">
+                <button class="primary-btn add-to-cart-btn" data-product="Noor Wellness Elixir" data-price="1299">Add to Cart</button>
+                <button class="learn-more-link" onclick="showProductDetails('Noor Wellness Elixir', 'A luxurious wellness concentrate crafted with premium saffron, organic rose petals, cardamom, and raw Himalayan honey. Formulated to support mood elevation and relaxation for evening rituals. Rich in antioxidants and mood-supporting compounds. Usage: Add 1 teaspoon to warm milk, sparkling water, or desserts. Recommended 30 minutes before bedtime. Contains no artificial additives or preservatives. Volume: 100ml. Shelf life: 18 months. Sourced from organic suppliers with fair-trade certification. Perfect for wellness enthusiasts and holistic practitioners.', '1299')">Learn More</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <img src="https://images.unsplash.com/photo-1487412720507-7da8ee3cspor?auto=format&fit=crop&w=600&q=80" alt="Luxury gift box" />
+            <h3 class="product-title">Ceremonial Hamper</h3>
+            <p>Handcrafted cedar box with saffron, brass spoon, artisan tea blend, and tasting guide.</p>
+            <div class="product-meta">
+              <span class="price">&#8377;4,499</span>
+              <div class="product-actions">
+                <button class="primary-btn add-to-cart-btn" data-product="Ceremonial Hamper" data-price="4499">Add to Cart</button>
+                <button class="learn-more-link" onclick="showProductDetails('Ceremonial Hamper', 'An exquisite gift set presented in a handcrafted cedar box with sustainable sourcing. Contents include: 2g Imperial Saffron Threads, pair of brass tasting spoons with intricate engravings, brass diya for ceremonial use, 50g artisan saffron-rose tea blend, and a 24-page infusion guide with recipes and rituals. Perfect for special occasions, corporate gifting, and creating memorable saffron experiences. Each hamper is individually numbered and includes a certificate of authenticity. FSC-certified packaging with eco-friendly materials. Ideal for chefs, wellness practitioners, and saffron connoisseurs. Complimentary personalized message card available upon request.', '4499')">Learn More</button>
+              </div>
+            </div>
+          </article>
+          <!-- Admin-added products will be appended here -->
+          <div id="admin-products-container"></div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem">
+          <a class="secondary-btn" href="products.html">View Full Catalog</a>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container two-column">
+          <div>
+            <p class="section-label">Legacy</p>
+            <h2 class="section-title">Five Generations of Saffron Artistry</h2>
+            <p>
+              Our family estate in Pampore nurtures crocus sativus across mineral-rich soil. Each bloom is hand-picked within six hours
+              of sunrise to retain terpenes, gently dried over cedar ember, and sealed immediately.
+            </p>
+            <div class="detail-meta" style="margin-top: 1.5rem">
+              <span>Traceable Farms</span>
+              <span>ISO Certified</span>
+              <span>Fair-trade</span>
+            </div>
+            <a class="primary-btn" href="about.html">Learn More</a>
+          </div>
+          <div class="features">
+            <div class="feature-card">
+              <span>&#x2728;</span>
+              <h4>Grade I Purity</h4>
+              <p>Tested for crocin > 240 and safranal intensity.</p>
+            </div>
+            <div class="feature-card">
+              <span>&#x1F33C;</span>
+              <h4>Sustainable Harvest</h4>
+              <p>Regenerative practices and minimal water footprint.</p>
+            </div>
+            <div class="feature-card">
+              <span>&#x1F381;</span>
+              <h4>Luxury Packaging</h4>
+              <p>UV-safe violet glass and FSC-certified boxes.</p>
+            </div>
+            <div class="feature-card">
+              <span>&#x1F30E;</span>
+              <h4>Global Delivery</h4>
+              <p>Express, insulated shipping to 32 countries.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" class="section container reviews">
+        <div class="section-header">
+          <p class="section-label">Voices</p>
+          <h2 class="section-title">Loved by Chefs & Wellness Curators</h2>
+        </div>
+        <div class="card-grid">
+          <article class="review-card">
+            <p>"The color release is phenomenal. A single strand transforms my patisserie creations with honeyed aroma."</p>
+            <div class="reviewer">
+              <strong>Ananya G.</strong>
+              <span>Pastry Chef, Mumbai</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <p>"I recommend Saffron India to clients for its purity and mood-elevating potency."</p>
+            <div class="reviewer">
+              <strong>Dr. Rehan Ali</strong>
+              <span>Holistic Practitioner</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <p>"Our boutique hotel's welcome ritual features their elixir—it sets a sublime first impression."</p>
+            <div class="reviewer">
+              <strong>Lineage Retreats</strong>
+              <span>Goa</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="blog" class="section container blog">
+        <div class="section-header">
+          <p class="section-label">Journal</p>
+          <h2 class="section-title">Notes from the Valley</h2>
+        </div>
+        <div class="card-grid">
+          <article class="blog-card">
+            <span class="tag">Harvest</span>
+            <h4>How We Score and Grade Each Batch</h4>
+            <p>Go behind the scenes of our lab testing and artisanal drying process.</p>
+            <a href="blog.html#grading">Read article →</a>
+          </article>
+          <article class="blog-card">
+            <span class="tag">Rituals</span>
+            <h4>Infusing Saffron into Everyday Wellness</h4>
+            <p>Recipes for golden milk, botanical tonics, and dessert pairings.</p>
+            <a href="blog.html#wellness">Read article →</a>
+          </article>
+          <article class="blog-card">
+            <span class="tag">Culture</span>
+            <h4>The Heritage of Pampore's Kesar Fields</h4>
+            <p>Meet the artisan families that keep saffron traditions alive.</p>
+            <a href="blog.html#heritage">Read article →</a>
+          </article>
+        </div>
+        <div class="newsletter">
+          <input type="email" placeholder="Enter email for harvest updates" />
+          <button class="primary-btn" type="button">Subscribe</button>
+        </div>
+      </section>
+
+      <section class="section container contact" id="connect">
+        <div class="section-header">
+          <p class="section-label">Connect</p>
+          <h2 class="section-title">Speak with Our Concierge</h2>
+          <p>Custom gifting, chef collaborations, or spa rituals—expect a response within 24 hours.</p>
+        </div>
+        <div class="connect-grid">
+          <div class="connect-card">
+            <h3>Concierge Desk</h3>
+            <p>Tell us about your event, menu, or storefront and we'll curate the perfect saffron ritual.</p>
+            <div class="connect-highlights">
+              <span>&#x23F0; Daily 9am – 9pm IST</span>
+              <span>&#x1F4CD; Kashmir • Mumbai • Global shipping</span>
+              <span>&#x1F381; Bespoke hampers & tasting kits</span>
+            </div>
+            <div class="contact-details">
+              <span>&#x260E; +91 99999 99999</span>
+              <span>&#x1F4F1; WhatsApp +91 95799 58302</span>
+              <span>&#x2709; concierge@saffronindia.com</span>
+            </div>
+            <div class="contact-cta">
+              <a class="primary-btn" href="mailto:concierge@saffronindia.com">Email Studio</a>
+              <a class="secondary-btn" href="https://wa.me/919579958302" target="_blank" rel="noopener">WhatsApp Us</a>
+            </div>
+          </div>
+          <form class="contact-form" action="#" method="post">
+            <input type="text" name="name" placeholder="Full Name" required />
+            <input type="email" name="email" placeholder="Email Address" required />
+            <input type="text" name="phone" placeholder="Phone / WhatsApp" />
+            <input type="text" name="subject" placeholder="Subject" />
+            <textarea name="message" placeholder="How can we help?" required></textarea>
+            <button class="primary-btn" type="submit">Send Message</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container footer">
+      <div class="footer-columns">
+        <div>
+          <h5>Studio</h5>
+          <p>Jhelum View Estate, Pampore, Kashmir 192121</p>
+          <p>+91 99999 99999</p>
+        </div>
+        <div>
+          <h5>Explore</h5>
+          <ul>
+            <li><a href="products.html">Shop</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Journal</a></li>
+            <li><a href="contact.html">Connect</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Customer Care</h5>
+          <ul>
+            <li><a href="checkout.html">Shipping & Delivery</a></li>
+            <li><a href="contact.html#faq">FAQs</a></li>
+            <li><a href="contact.html">Support</a></li>
+            <li><a href="about.html#sourcing">Sourcing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Follow</h5>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Pinterest</a></li>
+            <li><a href="#">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> Saffron India. All rights reserved.</p>
+        <p>Crafted with intention in Kashmir & Mumbai.</p>
+      </div>
+    </footer>
+
+    <!-- Product Details Modal -->
+    <div id="product-details-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="product-details-title">Product Details</h2>
+          <button class="modal-close" onclick="closeProductDetails()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="product-details-description" style="color: var(--purple-700); line-height: 1.8; margin-bottom: 1.5rem;"></p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: space-between; align-items: center; width: 100%;">
+            <span id="product-details-price" style="font-size: 1.5rem; color: var(--gold-400); font-weight: 600;"></span>
+            <button class="primary-btn" id="product-details-add-btn" onclick="addProductFromModal()" style="display: none;">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <script src="script.js"></script>
+  </body>
+</html>
+

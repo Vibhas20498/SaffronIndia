@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Saffron India</title>
+    <meta name="description" content="Access your Saffron India account to manage orders, subscriptions, and concierge services." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="whatsapp-btn" href="https://wa.me/919579958302" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">&#x1F4AC;</a>
+    <header>
+      <div class="container nav">
+        <a class="logo" href="index.html">Saffron India</a>
+        <nav class="nav-links">
+          <a href="index.html#products">Products</a>
+          <a href="index.html#reviews">Reviews</a>
+          <a href="contact.html">Contact</a>
+          <div class="nav-more">
+            <button class="secondary-btn nav-more-toggle" type="button">More ▾</button>
+            <div class="nav-more-menu">
+              <a href="about.html">About Us</a>
+              <a href="products.html">Shop All</a>
+              <a href="blog.html">Journal</a>
+              <a href="training.html">Training & Support</a>
+              <a href="career.html">Careers</a>
+              <a href="checkout.html">Checkout</a>
+            </div>
+          </div>
+        </nav>
+        <div class="nav-actions" id="auth-nav">
+          <a class="secondary-btn" href="login.html">Login</a>
+          <a class="primary-btn" href="register.html">Register</a>
+        </div>
+              </div>
+    </header>
+
+    <main class="container section">
+      <div class="page-hero">
+        <p class="section-label">Account</p>
+        <h1>Welcome Back</h1>
+        <p class="breadcrumbs"><a href="index.html">Home</a> / Login</p>
+      </div>
+
+      <div class="auth-card">
+        <h2>Sign in to Continue</h2>
+        <p>Access order history, concierge chat, and exclusive harvest drops.</p>
+        <form id="login-form">
+          <input type="email" name="email" placeholder="Email address" autocomplete="email" required />
+          <input type="password" name="password" placeholder="Password" autocomplete="current-password" required />
+          <button type="submit" class="primary-btn" style="width: 100%; justify-content: center">Login</button>
+        </form>
+        <p class="form-status" id="login-status" role="status"></p>
+        <div class="social-login">
+          <button type="button" class="social-btn" data-provider="google">Continue with Google</button>
+          <button type="button" class="social-btn" data-provider="apple">Continue with Apple</button>
+        </div>
+        <p class="switch-link">New here? <a href="register.html">Create an account</a></p>
+      </div>
+    </main>
+
+    <footer class="container footer">
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> Saffron India</p>
+        <p>Luxury saffron rituals crafted in Kashmir.</p>
+      </div>
+    </footer>
+    
+
+    
+<script src="script.js"></script>
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart | Saffron India</title>
+    <meta name="description" content="Review items added to your saffron cart before checkout. Secure payments and global shipping." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="whatsapp-btn" href="https://wa.me/919999999999" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">&#x1F4AC;</a>
+    <header>
+      <div class="container nav">
+        <a class="logo" href="index.html">Saffron India</a>
+        <nav class="nav-links">
+          <a href="index.html#products">Products</a>
+          <a href="index.html#reviews">Reviews</a>
+          <a href="contact.html">Contact</a>
+          <div class="nav-more">
+            <button class="secondary-btn nav-more-toggle" type="button">More ▾</button>
+            <div class="nav-more-menu">
+              <a href="about.html">About Us</a>
+              <a href="products.html">Shop All</a>
+              <a href="blog.html">Journal</a>
+              <a href="training.html">Training & Support</a>
+              <a href="career.html">Careers</a>
+              <a href="checkout.html">Checkout</a>
+            </div>
+          </div>
+        </nav>
+        <div class="nav-actions" id="auth-nav">
+          <a class="secondary-btn" href="login.html">Login</a>
+          <a class="primary-btn" href="register.html">Register</a>
+        </div>
+        <div class="nav-utility">
+          <a class="secondary-btn" href="profile.html">Profile</a>
+          <a class="primary-btn" href="checkout.html">Checkout</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-hero">
+        <p class="section-label">Your Cart</p>
+        <h1>Golden Basket</h1>
+        <p class="breadcrumbs"><a href="index.html">Home</a> / Cart</p>
+      </div>
+
+      <section class="section">
+        <div class="cart-list" id="cart-items"></div>
+        <div class="cart-summary" id="cart-summary">
+          <div class="subtotal-line">
+            <span>Subtotal</span>
+            <strong id="cart-subtotal">&#8377;0</strong>
+          </div>
+          <p style="color: var(--gray-300); font-size: 0.9rem">Shipping and taxes calculated at checkout.</p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem">
+            <a class="secondary-btn" href="products.html">Continue Shopping</a>
+            <a class="primary-btn" href="checkout.html">Proceed to Checkout</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="container footer">
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> Saffron India</p>
+        <p>Pure saffron, responsibly sourced.</p>
+      </div>
+    </footer>
+    
+    
+    <script src="script.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | Saffron India</title>
+    <meta name="description" content="Secure checkout for premium saffron products with express shipping and multiple payment options." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="whatsapp-btn" href="https://wa.me/919579958302" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">&#x1F4AC;</a>
+    <header>
+      <div class="container nav">
+        <a class="logo" href="index.html">Saffron India</a>
+        <nav class="nav-links">
+          <a href="index.html#products">Products</a>
+          <a href="index.html#reviews">Reviews</a>
+          <a href="contact.html">Contact</a>
+          <div class="nav-more">
+            <button class="secondary-btn nav-more-toggle" type="button">More ▾</button>
+            <div class="nav-more-menu">
+              <a href="about.html">About Us</a>
+              <a href="products.html">Shop All</a>
+              <a href="blog.html">Journal</a>
+              <a href="training.html">Training & Support</a>
+              <a href="career.html">Careers</a>
+              <a href="checkout.html">Checkout</a>
+            </div>
+          </div>
+        </nav>
+        <div class="nav-actions" id="auth-nav">
+          <a class="secondary-btn" href="login.html">Login</a>
+          <a class="primary-btn" href="register.html">Register</a>
+        </div>
+        <div class="nav-utility">
+          <a class="secondary-btn" href="profile.html">Profile</a>
+          <a class="primary-btn" href="cart.html">Cart</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-hero">
+        <p class="section-label">Checkout</p>
+        <h1>Complete Your Order</h1>
+        <p class="breadcrumbs"><a href="index.html">Home</a> / <a href="cart.html">Cart</a> / Checkout</p>
+      </div>
+
+      <section class="section">
+        <div class="checkout-layout">
+          <div class="checkout-form-wrapper">
+            <form class="checkout-form" id="checkout-form">
+              <div class="form-section">
+                <h3 class="form-section-title">Contact Information</h3>
+                <div class="form-row">
+                  <input type="text" name="fullName" placeholder="Full Name*" required />
+                  <input type="email" name="email" placeholder="Email Address*" required />
+                </div>
+                <input type="text" name="phone" placeholder="Phone / WhatsApp*" required />
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Shipping Address</h3>
+                <input type="text" name="country" placeholder="Country*" required />
+                <input type="text" name="address" placeholder="Address Line 1*" required />
+                <input type="text" name="address2" placeholder="Address Line 2 (Optional)" />
+                <div class="form-row">
+                  <input type="text" name="city" placeholder="City*" required />
+                  <input type="text" name="zip" placeholder="Postal Code*" required />
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Shipping Method</h3>
+                <div class="method-options">
+                  <label class="method-option">
+                    <input type="radio" name="shipping" value="standard" required checked />
+                    <div class="method-card">
+                      <div class="method-header">
+                        <span class="method-icon">📦</span>
+                        <div class="method-info">
+                          <strong>Standard Shipping</strong>
+                          <span class="method-detail">5-7 business days</span>
+                        </div>
+                        <span class="method-price">Free</span>
+                      </div>
+                    </div>
+                  </label>
+                  <label class="method-option">
+                    <input type="radio" name="shipping" value="express" required />
+                    <div class="method-card">
+                      <div class="method-header">
+                        <span class="method-icon">⚡</span>
+                        <div class="method-info">
+                          <strong>Express Shipping</strong>
+                          <span class="method-detail">2-3 business days</span>
+                        </div>
+                        <span class="method-price">₹299</span>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Payment Method</h3>
+                <div class="method-options">
+                  <label class="method-option">
+                    <input type="radio" name="payment" value="card" required checked />
+                    <div class="method-card">
+                      <div class="method-header">
+                        <span class="method-icon">💳</span>
+                        <div class="method-info">
+                          <strong>Credit / Debit Card</strong>
+                          <span class="method-detail">Visa, Mastercard, RuPay</span>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                  <label class="method-option">
+                    <input type="radio" name="payment" value="upi" required />
+                    <div class="method-card">
+                      <div class="method-header">
+                        <span class="method-icon">📱</span>
+                        <div class="method-info">
+                          <strong>UPI</strong>
+                          <span class="method-detail">PhonePe, Google Pay, Paytm</span>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                  <label class="method-option">
+                    <input type="radio" name="payment" value="cod" required />
+                    <div class="method-card">
+                      <div class="method-header">
+                        <span class="method-icon">💰</span>
+                        <div class="method-info">
+                          <strong>Cash on Delivery</strong>
+                          <span class="method-detail">Pay when you receive (India Only)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </label>
+                </div>
+
+                <div class="payment-detail active" id="card-fields">
+                  <div class="form-row">
+                    <div>
+                      <label>Card Number*</label>
+                      <input type="text" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" autocomplete="cc-number" />
+                    </div>
+                    <div>
+                      <label>Name on Card*</label>
+                      <input type="text" name="cardName" placeholder="As printed on card" autocomplete="cc-name" />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div>
+                      <label>Expiry Date*</label>
+                      <input type="text" name="cardExpiry" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" />
+                    </div>
+                    <div>
+                      <label>CVV*</label>
+                      <input type="password" name="cardCvv" placeholder="123" maxlength="4" autocomplete="cc-csc" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="payment-detail" id="upi-fields">
+                  <label>UPI ID*</label>
+                  <input type="text" name="upiId" placeholder="name@bank" />
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3 class="form-section-title">Order Notes (Optional)</h3>
+                <textarea name="notes" placeholder="Special instructions, gift messages, or delivery preferences..."></textarea>
+              </div>
+
+              <button class="primary-btn checkout-submit" type="submit" style="width: 100%; justify-content: center; margin-top: 1rem;">
+                Confirm & Place Order
+              </button>
+            </form>
+          </div>
+
+          <div class="checkout-summary-wrapper">
+            <div class="cart-summary">
+              <h3 class="summary-title">Order Summary</h3>
+              <div id="checkout-summary" class="summary-items"></div>
+              <div class="summary-divider"></div>
+              <div class="summary-totals">
+                <div class="subtotal-line">
+                  <span>Subtotal</span>
+                  <span id="checkout-subtotal">₹0</span>
+                </div>
+                <div class="subtotal-line" id="shipping-line" style="display: none;">
+                  <span>Shipping</span>
+                  <span id="shipping-cost">₹0</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="subtotal-line total-line">
+                  <span>Total</span>
+                  <strong id="checkout-total">₹0</strong>
+                </div>
+              </div>
+              <div class="summary-footer">
+                <p>🔒 Secure checkout protected with 256-bit encryption</p>
+                <p>🌱 We plant one saffron bulb for every order</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="receipt-modal" id="receipt-modal" aria-hidden="true">
+      <div class="receipt-content">
+        <button type="button" class="receipt-close" id="receipt-close" aria-label="Close receipt">&times;</button>
+        <div class="receipt-header">
+          <p class="section-label">Order Receipt</p>
+          <h2>Thank you for your purchase</h2>
+          <p id="receipt-date"></p>
+        </div>
+        <div class="receipt-body">
+          <div class="receipt-info">
+            <div>
+              <p class="receipt-label">Order ID</p>
+              <h3 id="receipt-id">#</h3>
+            </div>
+            <div>
+              <p class="receipt-label">Customer</p>
+              <h4 id="receipt-name">-</h4>
+              <p id="receipt-email"></p>
+            </div>
+          </div>
+          <div class="receipt-items" id="receipt-items"></div>
+          <div class="receipt-totals">
+            <div class="subtotal-line">
+              <span>Subtotal</span>
+              <span id="receipt-subtotal">₹0</span>
+            </div>
+            <div class="subtotal-line" id="receipt-shipping-line" style="display: none;">
+              <span>Shipping</span>
+              <span id="receipt-shipping">₹0</span>
+            </div>
+            <div class="subtotal-line total-line">
+              <span>Total Paid</span>
+              <strong id="receipt-total">₹0</strong>
+            </div>
+          </div>
+        </div>
+        <div class="receipt-actions">
+          <button type="button" class="secondary-btn" id="receipt-download">Download Receipt</button>
+          <button type="button" class="primary-btn" id="receipt-done">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="container footer">
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> Saffron India</p>
+        <p>Secure checkout protected with 256-bit encryption.</p>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    
+     
+    <script src="script.js"></script>
+  </body>
+</html>
+
