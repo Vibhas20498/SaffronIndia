@@ -1000,16 +1000,13 @@
     </div>
  
     <script>
-      const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:5000';
+      const API_BASE_URL = window.API_BASE_URL || (window.location.protocol === 'file:' ? 'http://127.0.0.1:5000' : '');
     
-      // In SaffronIndiaAdmin/index.html, find the adminGetJSON function and modify it like this:
-const adminGetJSON = async (endpoint) => {
-  console.log('adminGetJSON called with:', endpoint);  // Add this line
-  const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:5000';
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: 'GET',
-    credentials: 'include',
-  });
+      const adminGetJSON = async (endpoint) => {
+        const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
 
   if (!res.ok) {
     const error = await res.json();

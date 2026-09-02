@@ -88,7 +88,7 @@ function animateCard(card) {
 
 const STORAGE_KEY = 'saffronindia-cart';
 const ORDER_STORAGE_KEY = 'saffron-orders';
-const API_BASE_URL = window.API_BASE_URL || 'http://127.0.0.1:5000';
+const API_BASE_URL = window.API_BASE_URL || (window.location.protocol === 'file:' ? 'http://127.0.0.1:5000' : '');
 
 const postJSON = async (endpoint, payload) => {
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -111,7 +111,9 @@ const getJSON = async (endpoint) => {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data.message || 'Request failed');
+    const error = new Error(data.message || 'Request failed');
+    error.status = response.status;
+    throw error;
   }
   return data;
 };
@@ -746,12 +748,11 @@ const loadUserInfo = async () => {
       toggleAuthNav(false);
     }
   } catch (err) {
-    // Handle 401 Unauthorized - user not logged in
-    if (err.message.includes('401') || err.message.includes('Unauthorized')) {
-      console.log('User not authenticated, showing login/register');
+    // Handle 401 Unauthorized / Not authenticated - visitor is a guest
+    if (err.status === 401 || err.message.includes('401') || err.message.includes('Unauthorized') || err.message.includes('Not authenticated')) {
       toggleAuthNav(false);
     } else {
-      console.error('Error loading user info:', err);
+      console.warn('Could not load user session:', err.message);
       toggleAuthNav(false);
     }
     
