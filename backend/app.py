@@ -27,7 +27,7 @@ load_dotenv()
 # Get the parent directory (project root) for serving HTML files
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-app = Flask(__name__, static_folder=str(BASE_DIR), static_url_path='')
+app = Flask(__name__, static_folder=None)
 
 # ----------------------------------------------------------
 # Database Configuration (Supabase PostgreSQL / SQLite fallback)
