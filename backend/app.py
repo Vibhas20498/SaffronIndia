@@ -62,7 +62,32 @@ def normalize_db_url(url: str) -> str:
         url = f"{url}{sep}sslmode=require"
     return url
 
+is_production = os.getenv("FLASK_ENV") == "production" or os.getenv("VERCEL") == "1"
+
+def check_db_reachable(url: str) -> bool:
+    if not url.startswith("postgresql://"):
+        return True
+    try:
+        match = re.search(r'@([^/:?]+)', url)
+        if match:
+            host = match.group(1)
+            import socket
+            socket.gethostbyname(host)
+        return True
+    except Exception:
+        return False
+
 raw_db_url = normalize_db_url(os.getenv("DATABASE_URL", "sqlite:///saffron_india.db"))
+
+if raw_db_url.startswith("postgresql://") and not is_production:
+    if not check_db_reachable(raw_db_url):
+        print("[WARNING] PostgreSQL database host could not be resolved (Supabase project may be paused due to inactivity).")
+        print("[INFO] To unpause Supabase, click 'Restore project' in https://supabase.com/dashboard")
+        print("[INFO] Temporarily using local SQLite database (instance/dev_local.db) for local development.")
+        instance_dir = Path(__file__).resolve().parent / "instance"
+        instance_dir.mkdir(parents=True, exist_ok=True)
+        db_file = (instance_dir / "dev_local.db").as_posix()
+        raw_db_url = f"sqlite:///{db_file}"
 
 app.config["SQLALCHEMY_DATABASE_URI"] = raw_db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -83,7 +108,6 @@ if raw_db_url.startswith("postgresql://"):
 # Use persistent SECRET_KEY from env, fallback to consistent dev key
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "saffron-india-development-secret-key-change-in-production")
 
-is_production = os.getenv("FLASK_ENV") == "production" or os.getenv("VERCEL") == "1"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_SECURE"] = is_production
@@ -99,6 +123,7 @@ allowed_origins = [
     "http://127.0.0.1:5000",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    re.compile(r"^https://.*\.vercel\.app$"),
 ]
 if frontend_url:
     allowed_origins.append(frontend_url)
@@ -246,6 +271,37 @@ class OrderItem(db.Model):
             "qty": self.qty,
             "unit_price": self.unit_price,
         }
+
+
+# Auto-seed local SQLite database for instant local development if needed
+if raw_db_url.startswith("sqlite:///"):
+    with app.app_context():
+        try:
+            db.create_all()
+            if Product.query.count() == 0:
+                seed_products = [
+                    Product(name="Imperial Threads 2g", sku="threads", price=1999, description="Hand-picked stigmas with crocin levels above 250 for intense color and aroma. Premium Grade I saffron hand-picked from our Pampore estate at 5,000 ft altitude.", image_url="https://images.unsplash.com/photo-1453831210728-695502f9f795?auto=format&fit=crop&w=600&q=80", active=True),
+                    Product(name="Reserve Threads 5g", sku="reserve", price=4750, description="Limited harvest lot numbered by hand and packed in violet glass. An exclusive limited-edition harvest from our finest Pampore fields.", image_url="https://images.unsplash.com/photo-1464306076886-da185f6a9d12?auto=format&fit=crop&w=600&q=80", active=True),
+                    Product(name="Ceremonial Hamper", sku="hamper", price=4499, description="Includes saffron jar, tasting spoons, brass diya, and infusion guide in a handcrafted cedar box.", image_url="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80", active=True),
+                    Product(name="Noor Wellness Elixir", sku="elixir", price=1299, description="Infuse into sparkling water or desserts for antioxidant-rich notes. Crafted with premium saffron, organic rose petals, cardamom, and raw Himalayan honey.", image_url="https://images.unsplash.com/photo-1457410129867-5999af49daf7?auto=format&fit=crop&w=600&q=80", active=True)
+                ]
+                db.session.add_all(seed_products)
+                db.session.commit()
+                print("[INFO] Seeded default product catalog into local database.")
+            if not User.query.filter_by(role="admin").first():
+                admin_user = User(
+                    full_name="Admin",
+                    email="admin@saffronindia.com",
+                    phone="9999999999",
+                    role="admin",
+                    email_verified=True
+                )
+                admin_user.set_password("Admin@123")
+                db.session.add(admin_user)
+                db.session.commit()
+                print("[INFO] Created default admin: admin@saffronindia.com / Admin@123")
+        except Exception as e:
+            print(f"[WARNING] Could not auto-initialize local sqlite db: {e}")
 
 
 # ----------------------------------------------------------
@@ -1134,6 +1190,14 @@ def index():
 
 @app.route("/<path:filename>")
 def serve_static(filename):
+    safe_filename = filename.lower()
+    # Security: Block server-side code, secrets, logs, and database files
+    if (
+        safe_filename.endswith((".py", ".pyc", ".env", ".db", ".sqlite", ".sql", ".log"))
+        or safe_filename.startswith(("api/", "backend/", "instance/", "."))
+        or "/." in safe_filename
+    ):
+        return error_response("Not found", 404)
     return send_from_directory(BASE_DIR, filename)
 
 
