@@ -57,7 +57,16 @@ def normalize_db_url(url: str) -> str:
             encoded_pwd = urllib.parse.quote_plus(urllib.parse.unquote_plus(pwd_part))
             url = f"{scheme}{scheme_user_part}:{encoded_pwd}@{host_rest}"
             
-    if "supabase.co" in url and "sslmode=" not in url:
+    # Supabase direct hostname (db.<ref>.supabase.co) is IPv6-only.
+    # Convert automatically to Supabase IPv4 connection pooler for serverless (Vercel) compatibility.
+    pooler_match = re.match(r'^(postgresql(?:\+\w+)?://)([^:]+):(.*?)@db\.([a-z0-9]+)\.supabase\.co(?::\d+)?(/.*)?$', url)
+    if pooler_match:
+        scheme, user, pwd, project_ref, rest = pooler_match.groups()
+        pooler_user = f"{user}.{project_ref}" if "." not in user else user
+        rest = rest or "/postgres"
+        url = f"{scheme}{pooler_user}:{pwd}@aws-0-ap-southeast-1.pooler.supabase.com:6543{rest}"
+
+    if "supabase" in url and "sslmode=" not in url:
         sep = "&" if "?" in url else "?"
         url = f"{url}{sep}sslmode=require"
     return url
