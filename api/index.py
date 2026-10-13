@@ -10,7 +10,10 @@ sys.path.insert(0, str(BASE_DIR))
 sys.path.insert(0, str(BASE_DIR / "backend"))
 
 try:
-    from backend.app import app
+    try:
+        from backend.app import app
+    except ImportError:
+        from app import app
 except Exception as e:
     import_error = traceback.format_exc()
     print("FATAL: Failed to import backend app:", import_error, file=sys.stderr)
