@@ -3,7 +3,13 @@
   "framework": null,
   "functions": {
     "api/index.py": {
-      "includeFiles": "backend/**"
+      "includeFiles": [
+        "backend/**",
+        "*.html",
+        "*.css",
+        "*.js",
+        "static/**"
+      ]
     }
   },
   "rewrites": [

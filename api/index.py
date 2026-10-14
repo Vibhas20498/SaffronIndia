@@ -4,12 +4,13 @@ import traceback
 from pathlib import Path
 import urllib.parse
 
-# Add project root and backend folder to sys.path
+# 1. Ensure project root and backend folder are in sys.path
 BASE_DIR = Path(__file__).resolve().parent.parent
 for directory in (str(BASE_DIR), str(BASE_DIR / "backend")):
     if directory not in sys.path:
         sys.path.insert(0, directory)
 
+# 2. Safely import Flask application
 app_instance = None
 init_error = None
 
@@ -25,26 +26,26 @@ except Exception:
 if app_instance is None:
     from flask import Flask, jsonify
     fallback_app = Flask(__name__)
-    
+
     @fallback_app.route("/", defaults={"path": ""}, methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])
     @fallback_app.route("/<path:path>", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"])
-    def import_error_fallback(path=""):
+    def error_route(path=""):
         return jsonify({
             "success": False,
             "error": "InitializationError",
-            "message": "Backend Flask application failed to initialize on Vercel.",
+            "message": "Backend Flask application failed to initialize.",
             "details": init_error
         }), 500
-    
-    app = fallback_app
+
+    flask_app = fallback_app
 else:
-    app = app_instance
+    flask_app = app_instance
 
 
 class VercelPathFix:
     """
     WSGI Middleware for Vercel Serverless Functions.
-    Restores the original client requested path and cleans query parameters
+    Restores original client requested path and cleans query parameters
     when Vercel rewrites routes to /api/index.py.
     """
     def __init__(self, wsgi_app):
@@ -53,12 +54,12 @@ class VercelPathFix:
     def __call__(self, environ, start_response):
         try:
             path = environ.get("PATH_INFO", "")
-            
+
             # If Vercel passed /api/index.py, /index.py, /api/index, /api, or empty path
             if "index.py" in path or "index" in path or path in ("/api", "/api/", ""):
                 qs = urllib.parse.parse_qs(environ.get("QUERY_STRING", ""))
                 route = qs.get("__vercel_route__", [""])[0]
-                
+
                 # 1. Use __vercel_route__ query parameter if present
                 if route:
                     clean_route = route.lstrip("/")
@@ -97,6 +98,39 @@ class VercelPathFix:
             }).encode("utf-8")]
 
 
-# Apply middleware to the Flask WSGI application
-app.wsgi_app = VercelPathFix(app.wsgi_app)
+# Apply WSGI path fix middleware
+fixed_wsgi = VercelPathFix(flask_app.wsgi_app)
+flask_app.wsgi_app = fixed_wsgi
+
+
+class HybridApp:
+    """
+    Universal Application wrapper supporting both WSGI and ASGI.
+    Automatically detects caller protocol (WSGI: 2 args, ASGI: 3 args)
+    so Vercel Python runtimes (FastAPI or Flask presets) can invoke it seamlessly.
+    """
+    def __init__(self, wsgi_app, flask_obj):
+        self.wsgi_app = wsgi_app
+        self.flask_obj = flask_obj
+        try:
+            from a2wsgi import WSGIMiddleware
+            self.asgi_app = WSGIMiddleware(wsgi_app)
+        except Exception:
+            self.asgi_app = None
+
+    def __call__(self, *args, **kwargs):
+        # WSGI: (environ, start_response)
+        if len(args) == 2 and callable(args[1]):
+            return self.wsgi_app(*args, **kwargs)
+        # ASGI: (scope, receive, send)
+        if len(args) == 3 and self.asgi_app is not None:
+            return self.asgi_app(*args, **kwargs)
+        # Fallback to WSGI
+        return self.wsgi_app(*args, **kwargs)
+
+    def __getattr__(self, name):
+        return getattr(self.flask_obj, name)
+
+
+app = HybridApp(fixed_wsgi, flask_app)
 handler = app
