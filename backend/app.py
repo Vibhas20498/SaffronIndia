@@ -1,10 +1,14 @@
 import sys
 import os
 
-if hasattr(sys.stdout, 'reconfigure'):
-    sys.stdout.reconfigure(encoding='utf-8')
-if hasattr(sys.stderr, 'reconfigure'):
-    sys.stderr.reconfigure(encoding='utf-8')
+try:
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8')
+except Exception:
+    pass
+
 
 from flask import Flask, request, jsonify, send_from_directory, session
 from flask_cors import CORS
@@ -34,12 +38,23 @@ app = Flask(__name__, static_folder=None)
 # ----------------------------------------------------------
 import urllib.parse
 
+def get_postgres_driver_prefix() -> str:
+    try:
+        import psycopg  # psycopg v3
+        return "postgresql+psycopg://"
+    except ImportError:
+        return "postgresql://"
+
 def normalize_db_url(url: str) -> str:
     if not url:
         return "sqlite:///saffron_india.db"
     url = url.strip()
+    
+    driver_prefix = get_postgres_driver_prefix()
     if url.startswith("postgres://"):
-        url = url.replace("postgres://", "postgresql://", 1)
+        url = url.replace("postgres://", driver_prefix, 1)
+    elif url.startswith("postgresql://") and driver_prefix != "postgresql://":
+        url = url.replace("postgresql://", driver_prefix, 1)
     
     # Handle passwords wrapped in brackets like [password] or with unencoded @
     match = re.match(r'^(postgresql(?:\+\w+)?://)([^:]+):\[(.*?)\]@([^/@:]+(?::\d+)?(?:/.*)?)$', url)
@@ -74,7 +89,7 @@ def normalize_db_url(url: str) -> str:
 is_production = os.getenv("FLASK_ENV") == "production" or os.getenv("VERCEL") == "1"
 
 def check_db_reachable(url: str) -> bool:
-    if not url.startswith("postgresql://"):
+    if not (url.startswith("postgresql://") or url.startswith("postgresql+psycopg://")):
         return True
     try:
         match = re.search(r'@([^/:?]+)', url)
@@ -88,7 +103,7 @@ def check_db_reachable(url: str) -> bool:
 
 raw_db_url = normalize_db_url(os.getenv("DATABASE_URL", "sqlite:///saffron_india.db"))
 
-if raw_db_url.startswith("postgresql://") and not is_production:
+if (raw_db_url.startswith("postgresql://") or raw_db_url.startswith("postgresql+psycopg://")) and not is_production:
     if not check_db_reachable(raw_db_url):
         print("[WARNING] PostgreSQL database host could not be resolved (Supabase project may be paused due to inactivity).")
         print("[INFO] To unpause Supabase, click 'Restore project' in https://supabase.com/dashboard")
@@ -103,13 +118,20 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JSON_SORT_KEYS"] = False
 
 # Production-safe connection pool settings for PostgreSQL/Supabase
-if raw_db_url.startswith("postgresql://"):
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-        "pool_pre_ping": True,
-        "pool_recycle": 300,
-        "pool_size": 5,
-        "max_overflow": 10,
-    }
+if raw_db_url.startswith(("postgresql://", "postgresql+psycopg://")):
+    if is_production:
+        from sqlalchemy.pool import NullPool
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+            "poolclass": NullPool,
+            "pool_pre_ping": True,
+        }
+    else:
+        app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+            "pool_pre_ping": True,
+            "pool_recycle": 300,
+            "pool_size": 5,
+            "max_overflow": 10,
+        }
 
 # ----------------------------------------------------------
 # Session & Security Configuration
@@ -283,7 +305,7 @@ class OrderItem(db.Model):
 
 
 # Auto-seed local SQLite database for instant local development if needed
-if raw_db_url.startswith("sqlite:///"):
+if raw_db_url.startswith("sqlite:///") and not is_production:
     with app.app_context():
         try:
             db.create_all()

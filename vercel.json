@@ -1,11 +1,16 @@
 {
-  "version": 2,
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
   "functions": {
     "api/index.py": {
       "includeFiles": "backend/**"
     }
   },
   "rewrites": [
+    {
+      "source": "/api",
+      "destination": "/api/index.py"
+    },
     {
       "source": "/api/:path*",
       "destination": "/api/index.py?__vercel_route__=:path*"
